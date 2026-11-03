@@ -8,6 +8,11 @@
 body.fpflying #ready .wt{animation:none!important;opacity:0!important}
 @media (prefers-reduced-motion: reduce){#ready.nudge .wt,#ready.hint .wt{animation:none}}
 </style>
+<style id="belowbar-css">
+/* desktop: Statistics, Settings, the speaker, Cash total and On the table sit in one row under the table */
+.belowbar{position:relative;display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:12px 0 4px;padding-left:58px;min-height:46px}
+.belowbar .meters{margin-left:auto}
+</style>
 </head><body>
 <title>Flaming_Desktop_NOW</title>
 <style id="embedded-fonts">
@@ -683,11 +688,6 @@ body.phone h1{white-space:normal;font-size:24px}
         <p class="tag">Three cards move the flamingo. Bet where it lands.</p>
       </div>
     </div>
-    <div class="hbtns"><button class="ghost" id="statsBtn" type="button">Statistics</button><button class="ghost" id="setBtn" type="button">Settings</button></div>
-    <dl class="meters">
-      <div><dt>Cash total</dt><dd id="credits">$ 1,000</dd></div>
-      <div><dt>On the table</dt><dd id="total">0</dd></div>
-    </dl>
   </header>
 
   <main class="game">
@@ -730,6 +730,13 @@ body.phone h1{white-space:normal;font-size:24px}
         <div class="cashbar" aria-hidden="true">CASH TOTAL <b>$ <span id="credits2">1,000</span></b><span id="dealAmt" class="betsum"></span></div>
       </div>
 
+      <div class="belowbar" id="belowbar">
+        <div class="hbtns"><button class="ghost" id="statsBtn" type="button">Statistics</button><button class="ghost" id="setBtn" type="button">Settings</button></div>
+        <dl class="meters">
+          <div><dt>Cash total</dt><dd id="credits">$ 1,000</dd></div>
+          <div><dt>On the table</dt><dd id="total">0</dd></div>
+        </dl>
+      </div>
       <div id="guideSlot"></div>
       <div class="readout" aria-live="polite">
         <p class="why" id="dealerWhy"></p>
@@ -2971,7 +2978,9 @@ setInterval(()=>{
   function dockPos(){
     var st=document.getElementById('stage'), sr=st?st.getBoundingClientRect():{left:0,top:0}, top0=(sr.top+scrollY);
     var x,y;
-    if(sr.left>=SMALL+14){ x=Math.round((sr.left-SMALL)/2); y=Math.round(top0+10); }
+    var bar=document.getElementById('belowbar');
+    if(bar){ var br=bar.getBoundingClientRect(); x=Math.round(br.left+scrollX+4); y=Math.round(br.top+scrollY+(br.height-SMALL)/2); }
+    else if(sr.left>=SMALL+14){ x=Math.round((sr.left-SMALL)/2); y=Math.round(top0+10); }
     else { x=innerWidth-SMALL-8; y=3; }
     return [x,y];
   }
